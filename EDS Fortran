@@ -1,0 +1,76 @@
+! Youssef Abdelhady
+! Theory of Programming Languages 
+
+program KingYoussef
+  implicit none
+
+  !
+  character(45) :: sentence = "Youssef is the king"
+  integer, parameter :: shiftAmount = 4 !shift amount 
+
+  ! This will make the output in all caps
+  call ToUpper(sentence)
+  call Encrypt(sentence, shiftAmount)
+  write(*, *) sentence
+  call Decrypt(sentence, shiftAmount)
+  write(*, *) sentence
+  call Solve(sentence, 26)
+
+  contains
+
+  subroutine Encrypt(sentence, shiftAmount) ! ENCRYPT FUNCTION
+    character(*), intent(inout) :: sentence
+    integer, intent(in) :: shiftAmount
+    integer :: i
+
+    do i = 1, len(sentence)
+      if (iachar(sentence(i:i)) == 32) then
+        sentence(i:i) = achar(32)
+      else
+        sentence(i:i) = achar(modulo(iachar(sentence(i:i)) - 65 + shiftAmount, 26) + 65)
+      endif
+    end do
+  end subroutine Encrypt
+
+  subroutine Decrypt(sentence, shiftAmount)
+    character(*), intent(inout) :: sentence
+    integer, intent(in) :: shiftAmount
+    integer newShiftAmount
+
+    
+    newShiftAmount = shiftAmount * -1
+    call Encrypt(sentence, newShiftAmount)
+  end subroutine Decrypt
+
+  subroutine Solve(sentence, maxShiftAmount)
+    character(*), intent(inout) :: sentence
+    integer, intent(in) :: maxShiftAmount
+    character(len=len(sentence)) :: sentenceCopy
+    integer i
+
+    do i = 0, maxShiftAmount
+      sentenceCopy = sentence
+      call Encrypt(sentenceCopy, i)
+      write(*, *) "Caesar ", i, ": ", sentenceCopy
+    end do
+  end subroutine
+
+  subroutine ToUpper(sentence)
+    implicit none
+    character(*), intent(inout) :: sentence
+    integer i
+    integer j
+
+    do i = 1, len(sentence)
+      j = iachar(sentence(i:i))
+      if (j>= iachar("a") .and. j<=iachar("z")) then
+        sentence(i:i) = achar(iachar(sentence(i:i)) - 32)
+      else
+        sentence(i:i) = sentence(i:i)
+      end if
+    end do
+  end subroutine ToUpper
+
+end program KingYoussef
+
+
