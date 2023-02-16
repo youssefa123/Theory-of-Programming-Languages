@@ -13,7 +13,10 @@ object CeaserCipher extends App {
 	/ This Scala Blog helped a lot, I'm using at as citation for line 18-23
 	*/ 
 
-  
+  /* //If the c char is in our alphabet then we encrypt it 
+		//If it is not then we leave it be.
+	*/ 
+
   val outputString = inputString.map( (c: Char) => {
     val x = alphabet.indexOf(c.toUpper)
 
