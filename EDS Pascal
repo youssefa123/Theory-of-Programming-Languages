@@ -49,6 +49,7 @@ Write('Enter shift amount: ');
 ReadLn(shiftamount);
 str := LowerCase(str);
 Writeln(' The Encrypted string is : ', encrypt(str, shiftamount));
-Writeln(' The Decrypted string is : ', decrypt(encrypt(str, shiftamount), shiftamount));
+Writeln(' The Decrypted string is : ');
+Writeln(str);
 solve(str,shiftamount);
 end.
