@@ -1,76 +1,67 @@
-! Youssef Abdelhady
-! Theory of Programming Languages 
-
-program KingYoussef
-  implicit none
-
-  !
-  character(45) :: sentence = "Youssef is the king"
-  integer, parameter :: shiftAmount = 4 !shift amount 
-
-  ! This will make the output in all caps
-  call ToUpper(sentence)
-  call Encrypt(sentence, shiftAmount)
-  write(*, *) sentence
-  call Decrypt(sentence, shiftAmount)
-  write(*, *) sentence
-  call Solve(sentence, 26)
-
-  contains
-
-  subroutine Encrypt(sentence, shiftAmount) ! ENCRYPT FUNCTION
-    character(*), intent(inout) :: sentence
-    integer, intent(in) :: shiftAmount
-    integer :: i
-
-    do i = 1, len(sentence)
-      if (iachar(sentence(i:i)) == 32) then
-        sentence(i:i) = achar(32)
-      else
-        sentence(i:i) = achar(modulo(iachar(sentence(i:i)) - 65 + shiftAmount, 26) + 65)
-      endif
-    end do
-  end subroutine Encrypt
-
-  subroutine Decrypt(sentence, shiftAmount)
-    character(*), intent(inout) :: sentence
-    integer, intent(in) :: shiftAmount
-    integer newShiftAmount
-
-    
-    newShiftAmount = shiftAmount * -1
-    call Encrypt(sentence, newShiftAmount)
-  end subroutine Decrypt
-
-  subroutine Solve(sentence, maxShiftAmount)
-    character(*), intent(inout) :: sentence
-    integer, intent(in) :: maxShiftAmount
-    character(len=len(sentence)) :: sentenceCopy
-    integer i
-
-    do i = 0, maxShiftAmount
-      sentenceCopy = sentence
-      call Encrypt(sentenceCopy, i)
-      write(*, *) "Caesar ", i, ": ", sentenceCopy
-    end do
-  end subroutine
-
-  subroutine ToUpper(sentence)
+program Caesar
     implicit none
-    character(*), intent(inout) :: sentence
-    integer i
-    integer j
 
-    do i = 1, len(sentence)
-      j = iachar(sentence(i:i))
-      if (j>= iachar("a") .and. j<=iachar("z")) then
-        sentence(i:i) = achar(iachar(sentence(i:i)) - 32)
-      else
-        sentence(i:i) = sentence(i:i)
-      end if
-    end do
-  end subroutine ToUpper
+    ! Variables
+    character(100) :: str
+    integer :: shiftAmount
 
-end program KingYoussef
+    ! input from user
+    write(*, *) "Enter a string to encrypt:"
+    read(*, *) str
+    write(*, *) "Enter a shift value:"
+    read(*, *) shiftAmount
+
+    !output 
+    call encrypt(str, shiftAmount)
+    write(*, *) "The encrypted text is: ", str
+    call decrypt(str, shiftAmount)
+    write(*, *) "The decrypted text is: ", str
+    call solve(str, 26)
+
+contains
+
+    subroutine encrypt(str, shiftAmount)
+        character(*), intent(inout) :: str
+        integer, intent(in) :: shiftAmount
+        integer :: i
+        character :: c
+
+        i = 1
+        do while (i <= len(str)) 
+            c = str(i:i)
+            if (iachar(c) == 32) then
+                str(i:i) = achar(32)
+            else
+                str(i:i) = achar(modulo(iachar(c) - 65 + shiftAmount, 26) + 65)
+            endif
+            i = i + 1
+        end do
+
+    end subroutine encrypt
+
+    subroutine decrypt(str, shiftAmount)
+        character(*), intent(inout) :: str
+        integer, intent(in) :: shiftAmount
+        integer newshiftAmount
+        newshiftAmount = shiftAmount * -1
+        call encrypt(str, newshiftAmount)
+    end subroutine decrypt
+
+    subroutine solve(str, maxshiftAmount)
+        character(*), intent(inout) :: str
+        integer, intent(in) :: maxshiftAmount
+        character(len=len(str)) :: strCopy
+        integer i
+
+        do i = 0, maxshiftAmount
+            strCopy = str
+            call encrypt(strCopy, i)
+            write(*, *) "Caesar ", i, ": ", strCopy
+        end do
+    end subroutine
+
+
+end program Caesar
+
 
 
