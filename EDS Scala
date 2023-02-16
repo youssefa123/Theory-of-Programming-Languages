@@ -3,30 +3,28 @@
 */
 
 object CeaserCipher extends App {
-    // Main Function in Scala
+  val alphabet = "abcdefghijklmnopqrstuvwxyz"
 
+  val shift = 2
 
-val alphabet = "ABCDEFGHIJKLMOPQRSTUVWXYZ"
+  val inputString = "Youssef is the king"
 
-val shift = (scala.io.StdIn.readLine("Shift By: ").toInt + alphabet.size) % alphabet.size
-/*his expression likely implements a modular arithmetic operation that maps a shift amount to its equivalent value within the size of the alphabet*/
-val inputString = scala.io.StdIn.readLine("Cipher:")
+  /*https://konukoii.com/blog/2016/03/24/caesar-cipher-in-scala/
+	/ This Scala Blog helped a lot, I'm using at as citation for line 18-23
+	*/ 
 
-val outputString = inputString.map( (c: Char) => {
+  
+  val outputString = inputString.map( (c: Char) => {
     val x = alphabet.indexOf(c.toUpper)
 
-		//If the c char is in our alphabet then we encrypt it 
-		//If it is not then we leave it be.
-		if (x == -1){
-			c
-		}
-		else{
-			alphabet((x + shift) % alphabet.size)
-			} 
-	});
+    if (x == -1) {
+      c
+    } else {
+      alphabet((x + shift) % alphabet.size)
+    }
+  })
 
-	//Print the result
-	println(outputString);
-
-
+  println(outputString)
+  println(inputString)
+  println("Caesar 26: Youssef is the king ")
 }
