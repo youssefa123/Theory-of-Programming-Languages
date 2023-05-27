@@ -1,0 +1,16 @@
+(defun shift-word (word shift)
+  "Shifts each charachter of word by the given shift amount"
+    (with-output-to-string (out)
+    (map nil (lambda (char)
+              (write-char (code-char (+ (char-code char) shift) out))
+              word)))
+              
+              
+(defun decrypt-word (word shift)
+  "decrypts each charachter of a word by the given shift amount"
+    (with-output-to-string (out)
+    (map nil (lambda (char)
+              (write-char (code-char (- (char-code char) shift) out))
+              word)))
+              
+           
