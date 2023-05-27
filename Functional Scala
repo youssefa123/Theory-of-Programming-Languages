@@ -1,0 +1,82 @@
+import scala.io.StdIn.readLine
+object Demo1 {
+
+
+ // Define the encrypt function
+ def encrypt(input: String, shift: Int): String = {
+   // Defines the alphabet
+   val alphabet = "abcdefghijklmnopqrstuvwxyz"
+   // Convert the input string to lowercase
+   val inputLower = input.toLowerCase()
+   // Encrypt the input string by shifting characters by the shift value
+   val encrypted = inputLower.map(c => {
+     if (alphabet.contains(c)) {
+       val idx = alphabet.indexOf(c) // // alphabet.indexOf(c) is used to get the index of the character c in the alphabet string.
+
+
+       alphabet((idx + shift) % alphabet.length)
+     } else {
+       c
+     }
+   }).mkString.toUpperCase  //  joins the characters back into a string.
+
+
+
+
+   encrypted
+ }
+
+
+ // Define the decryption function
+ def decrypt(input: String, shift: Int): String = {
+   // Define the alphabet
+   val alphabet = "abcdefghijklmnopqrstuvwxyz"
+   // Convert the input string to lowercase
+   val inputLower = input.toLowerCase()
+
+
+   // Decrypts the input string by shifting characters back by the shift value
+   val decrypted = inputLower.map(c => {
+     if (alphabet.contains(c)) {
+       val idx = alphabet.indexOf(c)    
+       alphabet((idx - shift + alphabet.length) % alphabet.length)
+     } else {
+       c
+     }
+   }).mkString
+
+
+   decrypted
+ }
+
+
+ // Define the solve function
+ def solve(input: String, maxShift: Int): Unit = {
+   // Makes the shift values in reverse order
+   val shifts = (maxShift to 0 by -1).toList
+
+
+   // Decrypt the input string for each shift value and print the result
+   shifts.map(shift => (shift, decrypt(input, shift)))
+     .foreach { case (shift, decrypted) => println(s"Caesar $shift: $decrypted") }
+ }
+
+
+ def main(args: Array[String]): Unit = {
+   // Reads user input for the string to be encrypted, and shift value to be used in encryption
+   val input = readLine("Enter a string: ")
+   val shift = readLine("Enter a shift value: ").toInt
+   // This encrypts the input string with the given shift value
+   val encrypted = encrypt(input, shift)
+   println(s"Encrypted string: $encrypted")
+   val decryptedShift = readLine("Enter a shift value to decrypt: ").toInt
+   // Decrypt the encrypted string with the shift value
+   val decrypted = decrypt(encrypted, decryptedShift)
+   // Print the decrypted string
+   println(s"Decrypted string: $decrypted")
+
+
+   // Call the solve function on the input string
+   solve(input, 26)
+ }
+}
