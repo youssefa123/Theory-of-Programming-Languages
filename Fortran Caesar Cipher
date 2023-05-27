@@ -1,0 +1,50 @@
+program CaesarCipher
+    implicit none
+   
+    character(len=100) :: str, encrypted_str, decrypted_str
+    integer :: shift, i, j
+
+    print *, "Enter a string please:"
+    read *, str
+ 
+    print *, "Enter shift value please:"
+    read *, shift
+
+    ! Encrypt function
+    do i = 1, len_trim(str)
+        if (str(i:i) >= 'a' .and. str(i:i) <= 'z') then !If the character at position i in the string is a lowercase letter (between 'a' and 'z')
+            str(i:i) = char( mod( (ichar(str(i:i)) - ichar('a') + shift), 26 ) + ichar('A') )  
+        else if (str(i:i) >= 'A' .and. str(i:i) <= 'Z') then
+            str(i:i) = char( mod( (ichar(str(i:i)) - ichar('A') + shift), 26 ) + ichar('A') )
+        end if
+    end do
+    encrypted_str = str
+    print *, "Encrypted string is:"
+    print *, encrypted_str
+
+    ! Decrypt function 
+    ! Pretty much the opposite of encrypt, inverse of it.
+    print *, "Enter shift value for decryption:"
+    read *, shift
+    decrypted_str = encrypted_str
+    do i = 1, len_trim(decrypted_str)
+        if (decrypted_str(i:i) >= 'A' .and. decrypted_str(i:i) <= 'Z') then
+            decrypted_str(i:i) = char( mod( (ichar(decrypted_str(i:i)) - ichar('A') - shift + 26), 26 ) + ichar('A') )
+        end if
+    end do
+    print *, "The decrypted string is:"
+    print *, decrypted_str
+
+    ! Solve function
+    print *, "Solve:"
+    do j = 0, 25
+        encrypted_str = decrypted_str
+        do i = 1, len_trim(decrypted_str)
+            if (decrypted_str(i:i) >= 'A' .and. decrypted_str(i:i) <= 'Z') then
+                encrypted_str(i:i) = char( mod( (ichar(decrypted_str(i:i)) - ichar('A') + j), 26 ) + ichar('A') )
+            end if
+        end do
+        print *, "Caesar ", j, ": ", encrypted_str
+    end do
+
+end program CaesarCipher
